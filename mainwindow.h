@@ -19,6 +19,9 @@ public:
     ~MainWindow();
 
 private:
+    void setupBuilding();
+
+private:
     Ui::MainWindow *ui;
     QGraphicsScene* scene;
 };
