@@ -20,6 +20,7 @@ public:
 
 private:
     void setupBuilding();
+    void setupElevator();
 
 private:
     Ui::MainWindow *ui;
