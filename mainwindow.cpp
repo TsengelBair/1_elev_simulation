@@ -3,6 +3,7 @@
 
 #include <QScreen>
 #include <QGraphicsRectItem>
+#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -23,6 +24,21 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::floorSelected(int floorNumber)
+{
+    qDebug() << "Нажата кнопка этажа:" << floorNumber;
+
+    for (QGraphicsItem* item : scene->items()) {
+        if (QGraphicsEllipseItem* button = dynamic_cast<QGraphicsEllipseItem*>(item)) {
+            if (button->data(0).toInt() == floorNumber) {
+                button->setBrush(QBrush(Qt::green));
+                break;
+            }
+        }
+    }
+}
+
+
 void MainWindow::setupBuilding()
 {
     const int floorHeight = 60;
@@ -39,8 +55,16 @@ void MainWindow::setupBuilding()
         QGraphicsEllipseItem *button = scene->addEllipse(floorWidth - 40, i * floorHeight + 15, 30, 30);
         button->setBrush(QBrush(Qt::red));
 
+        button->setData(0, 9 - i);
+
         /// Делаем кнопку кликабельной (при клике добавить смену цвета)
         button->setFlag(QGraphicsItem::ItemIsSelectable);
+
+        connect(scene, &QGraphicsScene::selectionChanged, this, [this, button]() {
+            if (button->isSelected()) {
+                floorSelected(button->data(0).toInt());
+            }
+        });
     }
 }
 

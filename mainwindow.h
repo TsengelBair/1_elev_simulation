@@ -18,6 +18,9 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+    void floorSelected(int floorNumber);
+
 private:
     void setupBuilding();
     void setupElevator();
